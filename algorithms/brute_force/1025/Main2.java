@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-public class Main
+public class Main2
  {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,7 +28,7 @@ public class Main
             answer = l > answer ? l : answer;
         }
     }
-    static int  count = 0;
+    static int count = 0;
     public static void main(String argv[]) throws IOException{
         N = nextInt(); //y
         M = nextInt();//x
@@ -57,34 +57,33 @@ public class Main
                     for (int dy = -N+1; dy < N; dy++) {
                         int a = sx;
                         int b = sy;
-                        // check if this is the first occurrence of the line.
-                        int t1 = sx - dx, t2 = sy -dy;
-                        if( 0<= t1 && 0<= t2 && t1 < M && t2 < N  )
-                            continue; // this is not the first of line.
-                        for( ; 0<=a && 0 <=b && a < M && b < N ; a+=dx, b+=dy ){
-                            long num = 0;
-                            int a1 = a , b1 = b;
-                            while ( 0 <= a1 && 0 <= b1 && a1 < M && b1 < N ){
-                                num  = num*10 + arr[b1][a1];
-                                System.out.println(num);
-                                count++;
-                                check(num);
-                                if (dx == 0 && dy ==0) {
-                                    break;
-                                }
-                                a1+=dx;
-                                b1+=dy;
+                        // int c = dx;
+                        // int d = dy;
+                        long lookup = 0;
+                        while ( 0 <= a && a < M && 0 <= b && b < N){
+                            // System.out.println("a:" + a+" b:" + b);
+                            lookup += arr[b][a];
+                            
+                            if(history.contains(lookup)){
+                                // go to increment
+                            }else{
+                                history.add(lookup);
+                                check(lookup);
+                                
                             }
-                            if (dx == 0 && dy ==0) {
-                                    break;
-                                }
-                        }
-                    
+                            System.out.println(lookup);
+                            count++;
+                            lookup *= 10;
+                            a += dx;
+                            b += dy;
+                            if ( dx == 0 && dy == 0) {
+                                break;
+                            }
 
+                        }
                     }
                 }
             }
-        
         }
 
 
