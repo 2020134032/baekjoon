@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -17,23 +19,27 @@ public class Main {
         return st.nextToken();
     }
 
-    static ArrayDeque<Integer> deque = new ArrayDeque<>();
-    static PriorityQueue<Integer> pq = new PriorityQueue<>();
+    static Deque<int[]> q = new ArrayDeque<>();
     public static void main(String argv[]) throws IOException{
         int n = Integer.parseInt(next());
         int l = Integer.parseInt(next());
 
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            int input = Integer.parseInt(next());
-
-            deque.offer(input);
-            
-            if(i >=l){
-                pq.remove(deque.poll());
-                
+            if( !q.isEmpty() && q.peek()[1] == i -l ) q.poll();
+            int[] input = {Integer.parseInt(next()) , i};
+            while(!q.isEmpty() && (q.peekLast()[0] > input[0]) )
+            {
+                q.pollLast();
             }
-            pq.offer(input);
-            System.out.println(pq.peek());
+            q.offer(input);
+            
+
+            sb.append(q.peek()[0]).append(" ");
+
+            
         }
+
+        System.out.println(sb.toString());
     }
 }
