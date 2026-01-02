@@ -1,0 +1,1 @@
+javac Main.java && java Main < i.txt && del Main.class
