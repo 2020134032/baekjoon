@@ -8,4 +8,4 @@ mkdir $DIRNAME
 
 cd $DIRNAME
 touch Main.java
-touch i.txt
+touch i.txt 
