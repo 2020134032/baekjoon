@@ -1,3 +1,4 @@
+cd ..
 @echo off
 :: 사용자에게 폴더 이름 입력받기
 set /p "FolderName=프로젝트 폴더 이름을 입력하세요: "
