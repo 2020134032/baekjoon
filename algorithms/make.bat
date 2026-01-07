@@ -1,18 +1,18 @@
 cd ..
 @echo off
-:: ì‚¬ìš©ìì—ê²Œ í´ë” ì´ë¦„ ì…ë ¥ë°›ê¸°
-set /p "FolderName=í”„ë¡œì íŠ¸ í´ë” ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”: "
+:: »ç¿ëÀÚ¿¡°Ô Æú´õ ÀÌ¸§ ÀÔ·Â¹Ş±â
+set /p "FolderName=ÇÁ·ÎÁ§Æ® Æú´õ ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä: "
 
-:: í´ë” ìƒì„±
+:: Æú´õ »ı¼º
 mkdir "%FolderName%"
 cd "%FolderName%"
 
-:: Main.java íŒŒì¼ ìƒì„± (ê¸°ë³¸ ìë°” ì½”ë“œ ì‘ì„±)
+:: Main.java ÆÄÀÏ »ı¼º (±âº» ÀÚ¹Ù ÄÚµå ÀÛ¼º)
 type NUL > Main.java
 
-:: ë¹ˆ i.txt íŒŒì¼ ìƒì„±
+:: ºó i.txt ÆÄÀÏ »ı¼º
 type NUL > i.txt
 
 echo.
-echo [ì™„ë£Œ] %FolderName% í´ë” ì•ˆì— Main.javaì™€ i.txtê°€ ìƒì„±ë˜ì—ˆìŠµë‹ˆë‹¤.
+echo [¿Ï·á] %FolderName% Æú´õ ¾È¿¡ Main.java¿Í i.txt°¡ »ı¼ºµÇ¾ú½À´Ï´Ù.
 pause

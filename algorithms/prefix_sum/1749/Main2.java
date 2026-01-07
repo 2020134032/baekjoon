@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Main2 {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
@@ -25,7 +25,7 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
                 int input = nextInt();
-                a[i][j] = input;
+                a[i][j] = input + a[i][j-1] ;
             }
         }
 
@@ -33,15 +33,11 @@ public class Main {
 
         
         for(int m1=1;m1<=m;m1++){
-            int[] col = new int[n+1];
             for(int m2=m1;m2<=m;m2++){
-                for (int i = 1 ; i <= n; i++) {
-                        col[i] += a[i][m2];
-                    }
-                    int sum = 0;
+                int sum = 0;
                 for(int i = 1; i<=n; i++){
-                    
-                    sum = Math.max(sum+col[i], col[i]);
+                    int pref = a[i][m2] - a[i][m1-1];
+                    sum = Math.max(sum+pref, pref);
                     max = Math.max(max, sum);
                 }
             }
