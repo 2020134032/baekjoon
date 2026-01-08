@@ -24,46 +24,26 @@ import java.util.StringTokenizer;
     public static void main(String argv[]) throws IOException{
         int n = nextInt();
         int k = nextInt();
+        int[] pre = new int[n+1];
 
-        HashMap<Integer, List<Integer>> map = new HashMap<>();
-
-
-        int[] a = new int[n+1];
-        map.put(0, new ArrayList<>());
-        map.get(0).add(0);
-        for (int i = 1; i < n+1; i++) {
-            int input = nextInt();
-            int key = input +a[i-1];
-            a[i] = key;
-            List<Integer> list = map.getOrDefault( key , new ArrayList<>());
-            list.add(i);
-            map.put( key, list);
-        }
-
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0,1);
         long count = 0;
-
         for (int i = 1; i < n+1; i++) {
-            int key = -(k - a[i]);
-            List<Integer> list = map.getOrDefault(key, null);
-            if( list == null) continue;
+            int prefix_sum = pre[i-1] + nextInt();
+            pre[i] = prefix_sum;
 
-            // list.sort( Comparator.naturalOrder());
-            int l=0, r=list.size();
-            int target = i;
-            while (l<r) {
-                int m = (l+r) /2;
-                int val = list.get(m);
-                if (val < target ){
-                    l = m+1;
-                }
-                else{
-                    r= m;
-                }
-            }
+            // pre[i] - key (where index less than i) == k
+            int key = prefix_sum -k;
+            int how_many = map.getOrDefault(key, 0);
 
-            count += l;
+            count += how_many;
             
+            map.put(prefix_sum, map.getOrDefault(prefix_sum, 0) + 1);
         }
+
+        
+        
         System.out.println(count);
     }
  }
