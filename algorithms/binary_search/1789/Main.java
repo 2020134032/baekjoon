@@ -19,7 +19,7 @@ public class Main {
     }
     public static void main(String argv[]) throws IOException{
         long s = nextLong();
-        long sum = 0;
+        long sum = 1;
         
         /* 1 =1 
            2 = 2
@@ -33,13 +33,11 @@ public class Main {
            10 = 1 + 2 + 3 + 4
            11 = 1 + 2 + 3 + 5
         */
-
-        for( long i = 1; i <= s ; i++) {
+        long i = 2;
+        while ( sum <= s){
             sum += i;
-            if ( s == sum || s-sum <= i ){ // s == sum no need
-                System.out.println(i); // answer
-                break;
-            }
+            i++;
         }
+        System.out.println(i -2 );
     }
 }
