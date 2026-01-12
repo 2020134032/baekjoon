@@ -29,17 +29,13 @@ import java.util.StringTokenizer;
         HashMap<Integer, Integer> map = new HashMap<>();
         map.put(0,1);
         long count = 0;
+        int pref = 0;
         for (int i = 1; i < n+1; i++) {
-            int prefix_sum = pre[i-1] + nextInt();
-            pre[i] = prefix_sum;
-
+            pref += nextInt();
             // pre[i] - key (where index less than i) == k
-            int key = prefix_sum -k;
-            int how_many = map.getOrDefault(key, 0);
-
-            count += how_many;
+            count += map.getOrDefault(pref -k, 0);
             
-            map.put(prefix_sum, map.getOrDefault(prefix_sum, 0) + 1);
+            map.put( pref , map.getOrDefault(pref, 0) + 1);
         }
 
         
