@@ -28,24 +28,18 @@ public class Main {
     public static void main(String argv[]) throws IOException{
         int n = nextInt();
         int T = nextInt();
-        HashMap<List<Integer>,Integer> map = new HashMap<>();
+        HashMap<Integer, HashMap<Integer,Integer>> map = new HashMap<>(n*2);
         
         for (int i = 0; i < n; i++) {
             int x = nextInt();
             int y = nextInt();
-            List<Integer> list = new ArrayList<>();
-            list.add(x);
-            list.add(y);
-            map.put(  list , 1);
+            map.computeIfAbsent(x, k -> new HashMap<>()).put(y, 1);
+
         }
 
         Queue<int[]> q = new ArrayDeque<int[]>();
 
         q.add(new int[]{0,0,0}); // {x,y,move}
-        List<Integer> list = new ArrayList<>();
-            list.add(0);
-            list.add(0);
-            map.put(  list , 1);
 
         int min = -1;
         while (!q.isEmpty()) {
@@ -61,18 +55,21 @@ public class Main {
             for(int dx = -2 ; dx<=2 ; dx++){
                 int nx = x+dx;
                 if(nx <0 || nx >1000000) continue;
+                HashMap<Integer,Integer> inner = map.get(nx) ;
+                if( inner==null ) 
+                    continue;
                 for( int dy = -2 ; dy <=2; dy++){
                     int ny = y+dy;
                     if(ny <0 || ny >T) continue;
-                    list = new ArrayList<>();
-                    list.add(nx);
-                    list.add(ny);
-                    Integer v= map.remove(list);
+                    Integer v= inner.remove(ny);
                     if( v ==null) continue;
 
                     q.add(new int[]{nx,ny, move+1});
                     
                 } 
+
+                if(inner.isEmpty())
+                map.remove(nx);
             }
         }
         System.out.println(min);
