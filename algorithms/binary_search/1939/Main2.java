@@ -34,64 +34,56 @@ public class Main2 {
             long cap = nextLong();
             a.computeIfAbsent(from, k->new HashMap<>()).merge(to, cap, ( max , val  )-> Math.max(max,val) );
             a.computeIfAbsent(to, k->new HashMap<>()).merge(from, cap, ( max , val  )-> Math.max(max,val) );
-            // a.computeIfAbsent(from, k->new HashMap<>()).put(to, cap);
-            
-
-            // t1 = a.get(to);
-            // if(t1 != null) {
-            //     Long max = t1.get(from);
-            //     if(max != null) {
-            //         if (cap > max) t1.put(from,cap);
-            //     }  
-            //     else t1.put(from, cap);
-            // } else{
-            //     a.computeIfAbsent(to, (k-> new HashMap<>()).put(from,cap) );
-
-            // }
             
         }
         int start = nextInt();
         int end = nextInt();
+        // select node (start)
+        // for every edge, calculate the min between edge weight and current node
+        // if it is bigger than next node of edge, update
+        // after update, select biggest node 
+        // repeat
         class Node{
-            long cap;
-            int num; 
-            public Node(long cap, int num){
-                this.cap=cap;
-                this.num=num;
+            int next;
+            long weight;
+            Node(int next, long weight){
+                this.next=next;
+                this.weight=weight;
             }
         }
-        PriorityQueue<Node> pq = new PriorityQueue<>((n1,n2) -> Long.compare(n2.cap,n1.cap));
+
+        // 1. select node ( from heap) 
+        PriorityQueue<Node> pq = new PriorityQueue<>( (n1, n2) -> Long.compare(n2.weight,n1.weight) );
         boolean visited[] = new boolean[n+1];
+        long[] node_weights = new long[n+1];
+        pq.add(new Node(start, Long.MAX_VALUE));
 
-        long nodecap[] = new long[n+1];
-        nodecap[start] = Long.MAX_VALUE;
-        a.get(start).forEach((key, value) ->{
-            pq.add(new Node(value, key));
-            nodecap[key] =value;
-        });
 
-        while( !pq.isEmpty()){
-            Node currentNode = pq.poll();
-            if(visited[currentNode.num]) continue;
-            visited[currentNode.num]=true;
-            if(currentNode.num == end){
-                System.out.println(nodecap[end]);
+        while(!pq.isEmpty()){
+            Node node = pq.poll();
+            int cur = node.next;
+            long cur_weight = node.weight;
+
+            if (visited[cur]) continue;
+            visited[cur] = true;
+            if(cur == end) {
+                System.out.println(cur_weight);
+                break;
             }
-            // long currentMax = nodecap[currentNode.num];
-            long currentMax = currentNode.cap;
-            a.get(currentNode.num).forEach(( destNodeNum,weight )->{
-                if(visited[destNodeNum]) return;
-                long minCap = Math.min(weight, currentMax);
-                if(minCap > nodecap[destNodeNum] ){
-                    nodecap[destNodeNum] = minCap; 
-                    pq.add(new Node(minCap, destNodeNum));
+
+            HashMap<Integer, Long> adj = a.get(cur);
+            for ( Map.Entry<Integer,Long> e : adj.entrySet()) {
+                int next = e.getKey();
+                long edge_weight = e.getValue();
+
+                if(visited[next]) continue;
+                long new_weight = Math.min(cur_weight,edge_weight);
+                if ( new_weight > node_weights[next] ){
+                    node_weights[next] = new_weight;
+                    pq.add(new Node(next, new_weight));
                 }
-            });
+            }
+
         }
-
-
-
-
-
     }
 }
