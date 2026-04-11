@@ -25,9 +25,11 @@ public class Main {
     // find its group
     // put a node to a group(and set group)
     static int[] parent;
+    static int[] rank;
 
     static int find(int a) {
         while (parent[a] != a) {
+            parent[a] = parent[parent[a]];
             a = parent[a];
         }
         return a;
@@ -39,12 +41,19 @@ public class Main {
         if (p_a == p_b)
             return;
         // compress
-        while (b != parent[b]) {
-            int temp = parent[b];
-            parent[b] = p_a;
-            b = temp;
+        // while (b != parent[b]) {
+        // int temp = parent[b];
+        // parent[b] = p_a;
+        // b = temp;
+        // }
+        if (rank[p_a] > rank[p_b]) {
+            parent[p_b] = p_a;
+        } else if (rank[p_b] >= rank[p_a]) {
+            if (rank[p_b] == rank[p_a]) {
+                rank[p_b] += 1;
+            }
+            parent[p_a] = p_b;
         }
-        parent[b] = p_a;
     }
 
     public static void main(String[] args) throws IOException {
@@ -52,37 +61,39 @@ public class Main {
         int e = nextInt();
 
         // need to store vertices ..
-        int[][] weight = new int[e][3];
+        int[][] edge = new int[e][3];
         // makeset
-        parent = new int[v];
-        for (int i = 0; i < v; i++) {
+        parent = new int[v + 1];
+        rank = new int[v + 1];
+        for (int i = 1; i < v + 1; i++) {
             parent[i] = i;
+            rank[i] = 1;
         }
         long answer = 0;
 
-        for (int i = 0; i < weight.length; i++) {
+        for (int i = 0; i < edge.length; i++) {
             int a = nextInt();
             int b = nextInt();
             int w = nextInt();
-            int[] info = weight[i];
+            int[] info = edge[i];
             info[0] = w;
             info[1] = a;
             info[2] = b;
         }
 
-        Arrays.sort(weight, (a, b) -> Integer.compare(a[0], b[0]));
+        Arrays.sort(edge, (a, b) -> Integer.compare(a[0], b[0]));
 
-        int mstVertice = weight[0][0];
-        for (int i = 0; i < v - 1; i++) {
-            int v1 = weight[i][0];
-            int v2 = weight[i][1];
-            if (find(v1) == mstVertice && find(v2) == mstVertice) {
+        int counter = 0;
+        for (int i = 0; i < e && counter < v - 1; i++) {
+            int v1 = edge[i][1];
+            int v2 = edge[i][2];
+            if (find(v1) == find(v2)) {
                 // its a cycle.
                 continue;
             } else {
-                union(mstVertice, v1);
-                union(mstVertice, v2);
-                answer += weight[i][2];
+                union(v1, v2);
+                answer += edge[i][0];
+                counter++;
             }
         }
         System.out.println(answer);
